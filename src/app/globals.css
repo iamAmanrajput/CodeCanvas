@@ -10,8 +10,8 @@
   /* 2. Secondary Background (#05151B) - For Cards, Sidebars, Modals */
   --color-customTeal: #05151b;
   /* 3. Custom Blue (#0095CB) - Action/Buttons */
-  --color-customBlue: #0095cb;
-  --color-customBlue-hover: #007eb0; /* Light dark shade for hover */
+  --color-customBlue: #2db3ff;
+  --color-customBlue-hover: #39c2fe; /* Light dark shade for hover */
   /* 4. Custom White (#EEEEEE) - High Contrast Text */
   --color-customWhite: #eeeeee;
   /* 5. Custom Gray (#A8A8A8) - Body/Description Text */
