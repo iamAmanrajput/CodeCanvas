@@ -1,0 +1,145 @@
+
+generator client {
+  provider = "prisma-client"
+  output   = "./generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String    @id @default(uuid())
+  name          String
+  email         String
+  emailVerified Boolean   @default(false)
+  image         String?
+  credits       Int       @default(2)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  projects      Project[]
+  chats         Chat[]
+  payments      Payment[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+model Project {
+  id         String      @id @default(uuid())
+  userId     String
+  user       User        @relation(fields: [userId], references: [id])
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  chat       Chat?
+
+  @@index([userId])
+}
+
+model Chat {
+  id              String      @id @default(uuid())
+  message         Message[]
+  genereatedCode  String?     @db.Text
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  projectId       String      @unique
+  project         Project     @relation(fields: [projectId], references: [id])
+  userId          String
+  user            User    @relation(fields: [userId], references: [id])
+}
+
+model Message {
+  id        String   @id @default(uuid())
+
+  chatId    String
+  chat      Chat     @relation(fields: [chatId], references: [id])
+
+  role      Role     @default(USER)
+  content   String   @db.Text
+
+  createdAt DateTime @default(now())
+
+  @@index([chatId])
+}
+
+enum Role {
+  USER
+  ASSISTANT
+}
+
+model Payment {
+  id                  String      @id @default(uuid())
+  userId              String
+  user                User        @relation(fields: [userId], references: [id])
+  razorpayOrderId     String      @unique
+  razorpayPaymentId   String?     @unique
+  razorpaySignature   String?
+  amount              Int        // in paise (₹100 = 10000)
+  currency            String       @default("INR")
+  status              PaymentStatus @default(CREATED)
+
+  // Metadata
+  creditsPurchased Int?      // kitne credits buy kiye
+  planName         String?   // optional (pro plan etc)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([userId])
+}
+
+enum PaymentStatus {
+  CREATED
+  SUCCESS
+  FAILED
+}
