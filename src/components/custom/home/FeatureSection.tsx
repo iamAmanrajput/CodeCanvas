@@ -8,6 +8,7 @@ import {
   Rocket,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { generateColor } from "@/helpers/color-function";
 
 const features = [
   {
@@ -47,30 +48,6 @@ const features = [
     icon: Rocket,
   },
 ];
-
-const colors = [
-  {
-    text: "text-blue-400",
-    bg: "bg-blue-500/10",
-  },
-  {
-    text: "text-purple-400",
-    bg: "bg-purple-500/10",
-  },
-  {
-    text: "text-emerald-400",
-    bg: "bg-emerald-500/10",
-  },
-  {
-    text: "text-amber-400",
-    bg: "bg-amber-500/10",
-  },
-];
-
-export const generateColor = () => {
-  const randomIndex = Math.floor(Math.random() * colors.length);
-  return colors[randomIndex];
-};
 
 const FeatureSection = () => {
   return (
