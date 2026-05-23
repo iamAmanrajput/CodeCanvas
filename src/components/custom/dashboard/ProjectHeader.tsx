@@ -1,5 +1,5 @@
 import React from "react";
-import CreateProject from "./CreateProject";
+import CreateProjectButton from "./CreateProjectButton";
 
 const ProjectHeader = () => {
   return (
@@ -9,7 +9,7 @@ const ProjectHeader = () => {
           <h1 className="text-3xl">Projects</h1>
           <p>Manage your website projects and start creating</p>
         </div>
-        <CreateProject />
+        <CreateProjectButton />
       </div>
     </section>
   );

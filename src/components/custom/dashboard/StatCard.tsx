@@ -5,17 +5,12 @@ interface StatCardProps {
   icon?: React.ElementType;
   title?: string;
   value?: string | number;
-  Color: {
-    bg: string;
-    text: string;
-  };
 }
 
 const StatCard = ({
   icon: Icon = HelpCircle,
   title = "Stat Title",
   value = "15",
-  Color,
 }: StatCardProps) => {
   return (
     <div className="relative group rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 flex items-center justify-between overflow-hidden transition-all duration-300 hover:scale-[1.03] hover:border-white/20">
@@ -25,8 +20,8 @@ const StatCard = ({
       {/* Content */}
       <div className="flex items-center gap-4 z-10">
         {/* Icon */}
-        <div className={`p-3 rounded-xl border ${Color.bg} shadow-inner`}>
-          <Icon className={`w-6 h-6 ${Color.text}`} />
+        <div className={`p-3 rounded-xl border  shadow-inner`}>
+          <Icon className={`w-6 h-6 text-customWhite`} />
         </div>
 
         {/* Text */}
